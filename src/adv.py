@@ -1,4 +1,6 @@
 from room import Room
+from player import Player
+import textwrap
 
 # Declare all the rooms
 
@@ -39,13 +41,43 @@ room['treasure'].s_to = room['narrow']
 
 # Make a new player object that is currently in the 'outside' room.
 
-# Write a loop that:
-#
-# * Prints the current room name
-# * Prints the current description (the textwrap module might be useful here).
-# * Waits for user input and decides what to do.
-#
-# If the user enters a cardinal direction, attempt to move to the room there.
-# Print an error message if the movement isn't allowed.
-#
-# If the user enters "q", quit the game.
+
+player = Player("Ruwaidah", 0, room['outside'])
+
+
+def roomname():
+    pass
+
+    # Write a loop that:
+    #
+    # * Prints the current room name
+    # * Prints the current description (the textwrap module might be useful here).
+    # * Waits for user input and decides what to do.
+    #
+    # If the user enters a cardinal direction, attempt to move to the room there.
+    # Print an error message if the movement isn't allowed.
+    #
+    # If the user enters "q", quit the game.
+dir = ['n', 's', 'w', 'e']
+while True:
+    # x = input('>>')
+    # print(room['foyer'].description)
+    print(f"Player name: {player.name}")
+    print(f"Room name: {player.room['name']}")
+    text = textwrap.wrap(player.room.description,
+                         width=40, placeholder="...")
+    print("Description: ")
+    for tex in text:
+        print(tex)
+
+    x = input("chose a direction to move N S W E >>").lower()
+    if x in dir:
+        ro = f"{x}_to"
+        roo = "n_to"
+        print(player.room[roo])
+        exit()
+    elif x.lower() == 'q':
+        print("Good Bye!")
+        exit()
+    else:
+        print("invalid charecter")
