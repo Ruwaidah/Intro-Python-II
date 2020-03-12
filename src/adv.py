@@ -1,8 +1,6 @@
 from room import Room
 from player import Player
-import textwrap
-
-# Declare all the rooms
+from item import Item
 
 room = {
     'outside':  Room("Outside Cave Entrance",
@@ -24,8 +22,13 @@ earlier adventurers. The only exit is to the south."""),
 }
 
 
-# Link rooms together
+rock = Item("rock", "this is a small rock")
+sword = Item("sword", "this is an old sword")
+coin = Item("coin", "this is a coin")
+key = Item("key", "this is a silver key")
 
+
+# Link rooms together
 room['outside'].n_to = room['foyer']
 room['foyer'].s_to = room['outside']
 room['foyer'].n_to = room['overlook']
@@ -35,49 +38,24 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
-#
-# Main
-#
 
-# Make a new player object that is currently in the 'outside' room.
+# Items in rooms
+room['foyer'].items = [rock, sword, coin, key]
 
 
-player = Player("Ruwaidah", 0, room['outside'])
+player = Player(input("Please enter your name: "), room['outside'])
+print(player.current_room)
 
 
-def roomname():
-    pass
+valid_directions = ("n", "s", "e", "w")
 
-    # Write a loop that:
-    #
-    # * Prints the current room name
-    # * Prints the current description (the textwrap module might be useful here).
-    # * Waits for user input and decides what to do.
-    #
-    # If the user enters a cardinal direction, attempt to move to the room there.
-    # Print an error message if the movement isn't allowed.
-    #
-    # If the user enters "q", quit the game.
-dir = ['n', 's', 'w', 'e']
 while True:
-    # x = input('>>')
-    # print(room['foyer'].description)
-    print(f"Player name: {player.name}")
-    print(f"Room name: {player.room['name']}")
-    text = textwrap.wrap(player.room.description,
-                         width=40, placeholder="...")
-    print("Description: ")
-    for tex in text:
-        print(tex)
-
-    x = input("chose a direction to move N S W E >>").lower()
-    if x in dir:
-        ro = f"{x}_to"
-        roo = "n_to"
-        print(player.room[roo])
-        exit()
-    elif x.lower() == 'q':
-        print("Good Bye!")
-        exit()
+    cmd = input("\n inter a direction >> ")
+    if cmd == "q":
+        print("Goodbye!")
+        exit(0)
+    elif cmd in valid_directions:
+        player.travel(cmd)
+        print(player.current_room)
     else:
-        print("invalid charecter")
+        print("I did not understand that command")
